@@ -9,6 +9,13 @@ class Trie:
                 raise ValueError("Key must be a string")
             self.root.insert(key, value)
 
+    def search(self, word):
+        if word == "":
+            raise ValueError("Word cannot be empty")
+        if not isinstance(word, str):
+            raise ValueError("Word must be a string")
+        return self.root.search(word)
+
     def as_dict(self):
         return self.root.as_dict()
 
@@ -33,6 +40,14 @@ class TrieNode:
         child = TrieNode()
         self.children[prefix] = child
         child.insert(suffix, value)
+
+    def search(self, word):
+        if len(word) == 1:
+            return self.children.get(word)
+        char = word[0]
+        if char not in self.children:
+            return None
+        return self.children[char].search(word[1:])
 
     def as_dict(self):
         return {k: v.as_dict() for k, v in self.children.items()}

@@ -15,3 +15,11 @@ def test_trie_empty_key():
 def test_trie_non_string_key():
     with pytest.raises(ValueError):
         trie.Trie(((1, 1), ("tree", 2), ("try", 3)))
+
+
+def test_trie_search():
+    t = trie.Trie((("trie", 1), ("tree", 2), ("try", 3)))
+    assert "e" in t.search("tri").children
+    assert "e" in t.search("tre").children
+    assert t.search("try").value == 3
+    assert t.search("trio") is None
