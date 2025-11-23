@@ -66,3 +66,11 @@ def test_radix_non_string_key():
 def test_tree_height():
     r = RadixTree((("computer", 1), ("computing", 2), ("compute", 3)))
     assert r.height == 3
+
+
+def test_key():
+    r = RadixTree((("computer", 1), ("computing", 2), ("compute", 3)))
+    assert r.root.key == ""
+    assert r.root.children["comput"].key == "comput"
+    assert r.root.children["comput"].children["e"].key == "compute"
+    assert r.root.children["comput"].children["ing"].key == "computing"

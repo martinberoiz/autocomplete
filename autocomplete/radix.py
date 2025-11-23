@@ -7,6 +7,8 @@ that have only one child, reducing memory usage while maintaining fast prefix-ba
 lookups and insertions.
 """
 
+from functools import cached_property
+
 
 class RadixTree:
     """
@@ -262,3 +264,12 @@ class RadixNode:
         if self.children == {}:
             return 1
         return 1 + max(v.height for v in self.children.values())
+
+    @property
+    def key(self):
+        """
+        Full key string from the root to this node.
+        """
+        if self.parent is None:
+            return self.prefix
+        return self.parent.key + self.prefix
