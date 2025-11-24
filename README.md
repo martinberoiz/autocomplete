@@ -1,14 +1,14 @@
-# Autocomplete
+# Patrix
 
-A python package that uses a compressed prefix tree (aka trie or radix tree)
-to store a dictionary of "correct" words and provides suggestions to complete partial words.
+A python package that uses a radix tree (aka trie, compressed prefix tree, or compact prefix tree)
+to store a dictionary of known words and provides suggestions to complete partial words.
 
 It is used in autocomplete systems to provide suggestions to users based on the words they have typed.
 
 ## Trie example
 
 ```python
->>> from autocomplete import trie
+>>> from patrix import trie
 >>> t = trie.Trie((("trie", 1), ("try", 2), ("tree", 3)))
 >>> t.as_dict()
 {'t': {'r': {'i': {'e': {}}, 'y': {}, 'e': {'e': {}}}}}
@@ -18,7 +18,7 @@ Search for a word in the trie:
 
 ```python
 >>> t.search("tri")
-<autocomplete.trie.TrieNode object at 0x7f952c171c10>
+<patrix.trie.TrieNode object at 0x7f952c171c10>
 >>> t.search("tri").get_key()
 'tri'
 >>> t.search("trio") is None
@@ -36,7 +36,7 @@ Add a new word to the trie:
 ## Radix tree example
 
 ```python
->>> from autocomplete import radix
+>>> from patrix import radix
 >>> r = radix.RadixTree((("computer", 1), ("compute", 2), ("computing", 3)))
 >>> r.as_dict()
 {'comput': {'e': {'': {}, 'r': {}}, 'ing': {}}}

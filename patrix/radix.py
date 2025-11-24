@@ -7,8 +7,6 @@ that have only one child, reducing memory usage while maintaining fast prefix-ba
 lookups and insertions.
 """
 
-from functools import cached_property
-
 
 class RadixTree:
     """
