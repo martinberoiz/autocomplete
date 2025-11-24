@@ -54,3 +54,16 @@ Display suggestions on how to continue a given query prefix
 >>> r.completions("p")
 set()
 ```
+
+## Compression rate
+
+```python
+>>> r.total_chars
+11
+>>> len("computer" + "computing" + "compute")
+24
+>>> 1 - 11 / 24  # 54% compression rate
+0.5416666666666667
+>>> r.size  # nodes in the tree excluding the root
+6
+```
