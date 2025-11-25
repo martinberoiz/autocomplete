@@ -1,5 +1,10 @@
 # Patrix
 
+[![pipeline](https://github.com/martinberoiz/patrix/actions/workflows/test.yml/badge.svg)](https://github.com/martinberoiz/patrix/actions/workflows/test.yml)
+[![docs](https://readthedocs.org/projects/patrix/badge/?version=latest)](https://patrix.readthedocs.io/)
+[![python](https://img.shields.io/pypi/pyversions/patrix)](https://pypi.org/project/patrix/)
+[![license](https://img.shields.io/pypi/l/patrix)](https://github.com/martinberoiz/patrix/blob/main/LICENSE.txt)
+
 A python package that uses a radix tree (aka trie, compressed prefix tree, or compact prefix tree)
 to store a dictionary of known words and provides suggestions to complete partial words.
 
