@@ -24,6 +24,9 @@ keywords = [
     "prefix-matching",
 ]
 
+[project.urls]
+Repository = "https://github.com/martinberoiz/patrix"
+
 [build-system]
 requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
