@@ -22,7 +22,7 @@ class RadixTree:
         The root node of the radix tree.
     """
 
-    def __init__(self, entries):
+    def __init__(self, entries=()):
         """
         Initialize a RadixTree with a collection of strings or key-value pairs.
 
@@ -94,6 +94,26 @@ class RadixTree:
             in leaf nodes, only the tree structure.
         """
         return self.root.as_dict()
+
+    @classmethod
+    def from_dict(cls, node_dict):
+        """
+        Create a radix tree from a nested dictionary.
+        """
+        instance = cls()
+        root = instance.root
+        # Create and attach all initially empty children nodes to root
+        root.children = {k: RadixNode(k, parent=root) for k in node_dict}
+        # push the children nodes and what they should contain to the stack
+        stack = [(node, node_dict[prefix]) for prefix, node in root.children.items()]
+        while stack:
+            # 'node' will be expanded with subtree
+            node, subtree = stack.pop()
+            # Create and attach all initially empty children nodes to the node
+            node.children = {k: RadixNode(k, parent=node) for k in subtree}
+            # push the children nodes and what they should contain to the stack
+            stack.extend([(v, subtree[k]) for k, v in node.children.items()])
+        return instance
 
     @property
     def height(self):

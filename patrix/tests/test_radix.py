@@ -119,3 +119,9 @@ def test_siblings():
     assert len(node.siblings) == 2
     assert "e" in node.siblings
     assert "ing" in node.siblings
+
+
+def test_from_dict():
+    r = RadixTree(["computer", "computing", "compute", "screen"])
+    s = RadixTree.from_dict(r.as_dict())
+    assert s.as_dict() == r.as_dict()
