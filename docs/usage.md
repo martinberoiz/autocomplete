@@ -22,8 +22,21 @@ Insert a new word into the radix tree:
 
 ```python
 >>> r.insert("computing")
->>> r.as_dict()
+>>> r.asdict()
 {'comput': {'e': {'': {}, 'r': {}}, 'ing': {}}}
+```
+
+Get the value of an entry, or check if the tree contains some key:
+
+```python
+>>> r["computer"]
+1
+>>> "compute" in r
+True
+>>> "computing" in r
+True
+>>> "comput" in r
+False
 ```
 
 ### Getting Completions
@@ -47,8 +60,16 @@ Convert the radix tree to a nested dictionary representation:
 
 ```python
 >>> r = RadixTree(("computer", "compute", "computing"))
->>> r.as_dict()
+>>> r.asdict()
 {'comput': {'e': {'': {}, 'r': {}}, 'ing': {}}}
+```
+
+### Upload from a dictionary
+
+```python
+>>> r = RadixTree.from_dict({'comput': {'e': {'': {}, 'r': {}}, 'ing': {}}})
+>>> "compute" in r
+True
 ```
 
 ### Compression Rate
@@ -78,74 +99,6 @@ Access tree metrics:
 >>> r.total_chars  # Total characters in all prefixes
 11
 ```
-
-## Trie
-
-A standard trie (prefix tree) stores one character per node, making it simple but potentially more memory-intensive than a radix tree.
-
-### Creating a Trie
-
-Initialize a Trie with a collection of key-value pairs:
-
-```python
-from patrix import trie
-
-# Create a trie with initial data
-t = trie.Trie((("trie", 1), ("try", 2), ("tree", 3)))
-```
-
-### Searching for Words
-
-Search for a word in the trie:
-
-```python
->>> t.search("tri")
-<patrix.trie.TrieNode object at 0x7f952c171c10>
->>> t.search("tri").get_key()
-'tri'
->>> t.search("trio") is None
-True
-```
-
-### Inserting Words
-
-Add a new word to the trie:
-
-```python
->>> t.insert("trio", 4)
->>> t.as_dict()
-{'t': {'r': {'e': {'e': {}}, 'i': {'e': {}, 'o': {}}, 'y': {}}}}
-```
-
-### Visualizing the Trie
-
-Convert the trie to a nested dictionary representation:
-
-```python
->>> t = trie.Trie((("trie", 1), ("try", 2), ("tree", 3)))
->>> t.as_dict()
-{'t': {'r': {'i': {'e': {}}, 'y': {}, 'e': {'e': {}}}}}
-```
-
-
-## Comparison: Trie vs Radix Tree
-
-### When to Use Trie
-
-- Simple use cases where memory is not a concern
-- Need to traverse character-by-character
-- Educational purposes to understand prefix trees
-
-### When to Use Radix Tree
-
-- Memory efficiency is important
-- Working with many words that share common prefixes
-- Building autocomplete systems for production
-- Need compression metrics
-
-### Memory Comparison
-
-The radix tree compresses common prefixes, significantly reducing memory usage when many words share prefixes. For example, with words like "computer", "compute", and "computing", the radix tree stores the common prefix "comput" once, while a trie would store each character separately.
 
 ## Common Use Cases
 
@@ -179,7 +132,7 @@ print(get_suggestions("program"))   # {'program', 'programming'}
 ### Word Dictionary
 
 ```python
-from patrix import Trie
+from patrix import RadixTree
 
 words = [
     ("hello", "greeting"),
@@ -188,23 +141,71 @@ words = [
 ]
 
 # Create a dictionary
-dictionary = Trie(words)
+dictionary = RadixTree(words)
 
 
 # Check if word exists
 def word_exists(word):
-    node = dictionary.search(word)
-    return node is not None and node.value is not None
+    return word in dictionary
 
 
 # Get word definition
 def get_definition(word):
-    node = dictionary.search(word)
-    return node.value if node and node.value else None
+    return dictionary.get(word)
 
 print(word_exists("hello"))  # True
 print(word_exists("he"))  # False
 print(word_exists("hi"))  # False
 print(get_definition("hello"))  # 'greeting'
 print(get_definition("help"))  # 'assistance'
+```
+
+## Trie
+
+A standard trie (prefix tree) stores one character per node, making it simple but potentially more memory-intensive than a radix tree.
+
+This is added for educational purposes to understand prefix trees.
+
+### Creating a Trie
+
+Initialize a Trie with a collection of key-value pairs:
+
+```python
+from patrix import trie
+
+# Create a trie with initial data
+t = trie.Trie((("trie", 1), ("try", 2), ("tree", 3)))
+```
+
+### Searching for Words
+
+Search for a word in the trie:
+
+```python
+>>> t.search("tri")
+<patrix.trie.TrieNode object at 0x7f952c171c10>
+>>> t.search("tri").get_key()
+'tri'
+>>> t.search("trio") is None
+True
+```
+
+### Inserting Words
+
+Add a new word to the trie:
+
+```python
+>>> t.insert("trio", 4)
+>>> t.asdict()
+{'t': {'r': {'e': {'e': {}}, 'i': {'e': {}, 'o': {}}, 'y': {}}}}
+```
+
+### Visualizing the Trie
+
+Convert the trie to a nested dictionary representation:
+
+```python
+>>> t = trie.Trie((("trie", 1), ("try", 2), ("tree", 3)))
+>>> t.asdict()
+{'t': {'r': {'i': {'e': {}}, 'y': {}, 'e': {'e': {}}}}}
 ```

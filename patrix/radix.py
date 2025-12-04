@@ -81,7 +81,7 @@ class RadixTree:
         """
         return self.root.completions(key)
 
-    def as_dict(self):
+    def asdict(self):
         """
         Convert the radix tree to a nested dictionary representation.
 
@@ -93,7 +93,7 @@ class RadixTree:
             Note: This representation does not preserve the values stored
             in leaf nodes, only the tree structure.
         """
-        return self.root.as_dict()
+        return self.root.asdict()
 
     @classmethod
     def from_dict(cls, node_dict):
@@ -139,6 +139,18 @@ class RadixTree:
         sum of len(key) for all keys to calculate the compression rate.
         """
         return self.root.total_chars
+
+    def __getitem__(self, key):
+        return self.root[key]
+
+    def get(self, key, default=None):
+        try:
+            return self[key]
+        except KeyError:
+            return default
+
+    def __contains__(self, key):
+        return self.root._search_node(key) is not None
 
 
 class RadixNode:
@@ -351,7 +363,7 @@ class RadixNode:
                 return key1[:i]
         return key1[:min_length]
 
-    def as_dict(self):
+    def asdict(self):
         """
         Convert the subtree rooted at this node to a nested dictionary.
 
@@ -365,7 +377,7 @@ class RadixNode:
             dictionaries representing child subtrees. Leaf nodes return
             empty dictionaries.
         """
-        return {k: v.as_dict() for k, v in self.children.items()}
+        return {k: v.asdict() for k, v in self.children.items()}
 
     @property
     def height(self):
@@ -402,3 +414,29 @@ class RadixNode:
         return len(self.prefix) + sum(
             child.total_chars for child in self.children.values()
         )
+
+    def _search_node(self, key):
+        search_node = self
+        search_key = key
+        while search_node:
+            common_prefix, node_prefix, next_node = (
+                search_node._find_common_prefix_child(search_key)
+            )
+            node = search_node  # Save the current node
+            # update the search key by dropping the common prefix
+            search_key = search_key[len(common_prefix) :]
+            search_node = next_node
+
+        if key != node.key:
+            return None
+        if "" in node.children:
+            return node.children[""]
+        if len(node.children) != 0:
+            return None
+        return node
+
+    def __getitem__(self, key):
+        node = self._search_node(key)
+        if node is None:
+            raise KeyError
+        return node.value
