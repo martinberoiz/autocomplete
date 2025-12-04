@@ -64,6 +64,12 @@ def test_insert():
     assert r.as_dict() == {"comput": {"e": {"": {}, "r": {}}, "ing": {}}}
 
 
+def test_insertion_order():
+    r = RadixTree(("compute", "computer", "computing"))
+    s = RadixTree(("computer", "compute", "computing"))
+    assert r.as_dict() == s.as_dict()
+
+
 def test_duplicate():
     r = RadixTree((("computer", 1), ("computer", 2)))
     assert r.as_dict() == {"computer": {}}
