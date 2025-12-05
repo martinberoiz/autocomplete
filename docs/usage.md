@@ -39,6 +39,19 @@ True
 False
 ```
 
+Pop an entry:
+
+```python
+>>> r.pop("compute")
+2
+>>> "compute" in r
+False
+>>> r.pop("nokey")
+KeyError: 'nokey'
+>>> r.pop("nokey", 0)
+0
+```
+
 ### Getting Completions
 
 Display suggestions on how to continue a given query prefix:
