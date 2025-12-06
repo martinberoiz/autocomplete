@@ -457,6 +457,24 @@ class RadixNode:
         return node.value
 
     def pop(self, key):
+        """
+        Pop the value associated with the given key from the subtree rooted at this node.
+
+        Parameters
+        ----------
+        key : str
+            The key to pop.
+
+        Returns
+        -------
+        any
+            The value associated with the given key.
+
+        Raises
+        ------
+        KeyError
+            If the key is not found.
+        """
         node = self._search_node(key)
         if node is None:
             raise KeyError
