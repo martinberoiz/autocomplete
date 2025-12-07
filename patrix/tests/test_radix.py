@@ -199,3 +199,8 @@ def test_items():
     assert set(r.items()) == set(
         (("computer", 1), ("compute", 2), ("computing", 3), ("screen", 4))
     )
+
+    r = RadixTree()
+    assert set(r.keys()) == set()
+    assert set(r.values()) == set()
+    assert set(r.items()) == set()

@@ -525,6 +525,8 @@ class RadixNode:
             if node.children:
                 stack.extend(reversed(node.children.values()))
                 continue
+            if node.is_root:
+                return
             yield node.key
 
     def values(self):
@@ -537,6 +539,8 @@ class RadixNode:
             if node.children:
                 stack.extend(reversed(node.children.values()))
                 continue
+            if node.is_root:
+                return
             yield node.value
 
     def items(self):
@@ -549,4 +553,6 @@ class RadixNode:
             if node.children:
                 stack.extend(reversed(node.children.values()))
                 continue
+            if node.is_root:
+                return
             yield node.key, node.value
