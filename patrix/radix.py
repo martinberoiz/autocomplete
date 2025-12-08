@@ -68,7 +68,7 @@ class RadixTree:
             raise ValueError("Key must be a string")
         self.root.insert(key, value)
 
-    def completions(self, key):
+    def completions(self, key=""):
         """
         Return possible completions for the given key.
 
@@ -82,6 +82,8 @@ class RadixTree:
         list
             A list of possible completions for the given key.
         """
+        if key == "":
+            return set(self.root.children.keys())
         return self.root.completions(key)
 
     def asdict(self):

@@ -96,6 +96,8 @@ def test_key():
 
 def test_completions():
     r = RadixTree(["computer", "computing", "compute", "screen"])
+    assert r.completions() == {"comput", "screen"}
+    assert r.completions("") == {"comput", "screen"}
     assert r.completions("comp") == {"comput"}
     assert r.completions("comput") == {"compute", "computing"}
     assert r.completions("compute") == {"compute", "computer"}
