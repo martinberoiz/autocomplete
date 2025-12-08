@@ -181,6 +181,9 @@ class RadixTree(MutableMapping):
             c[k] = v
         return c
 
+    def clear(self):
+        self.root.children = {}
+
     def __or__(self, other):
         radix_tree = RadixTree()
         for k, v in self.items():
