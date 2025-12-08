@@ -255,7 +255,8 @@ class RadixNode:
         if common_prefix == existing_prefix:
             # if this is a leaf node, preserve the prefix with an empty string
             if len(existing_child.children) == 0:
-                existing_child.insert("")
+                existing_child.insert("", existing_child.value)
+                existing_child.value = None
             remaining_key = key[len(common_prefix) :]
             existing_child.insert(remaining_key, value)
             return
